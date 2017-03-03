@@ -1,0 +1,62 @@
+
+# /
+/classes
+/data
+/test-classes
+/test-results
+/tmp
+/.classpath
+/.project
+/doc
+/local
+
+# /build/
+/build/*.bak
+/build/.gradle
+/build/build
+/build/build-snapshot-howto.txt
+/build/build.properties
+/build/gradle-app.setting
+/build/ivysettings.xml
+/build/local*
+
+# /doc-src/
+/doc-src/changelist_details.txt
+
+# /doc-src/images/db/
+/doc-src/images/db/*.gif
+/doc-src/images/db/*.svg
+/doc-src/images/db/[a-gi-moq-tv-z]*
+/doc-src/images/db/note.png
+/doc-src/images/db/note.tif
+
+# /integration/extAuthWithSpring/
+/integration/extAuthWithSpring/classes
+/integration/extAuthWithSpring/tmp
+
+# /integration/extAuthWithSpring/resources/
+/integration/extAuthWithSpring/resources/jaas.cfg
+
+# /lib/
+/lib/[a-rt-zA-Z0-9]*
+/lib/s[a-df-zA-Z0-9]*
+
+# /sample/
+/sample/sample
+
+# /stylesheets/
+/stylesheets/rng-catalog.xml
+
+# /test-src/org/hsqldb/util/preprocessor/
+/test-src/org/hsqldb/util/preprocessor/ATest.java
+
+# /testrun/hsqldb/
+/testrun/hsqldb/*.properties
+/testrun/hsqldb/*.script
+/testrun/hsqldb/*.log
+/testrun/hsqldb/*.data
+/testrun/hsqldb/*.backup
+
+# /testrun/sqltool/
+/testrun/sqltool/local*
+/testrun/sqltool/.gradle
