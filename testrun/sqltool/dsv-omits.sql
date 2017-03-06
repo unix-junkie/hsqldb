@@ -1,5 +1,5 @@
 /*
- * $Id: dsv-omits.sql$
+ * $Id$
  *
  * Tests omitting columns via header line and *DSV_SKIP_COLS
  */

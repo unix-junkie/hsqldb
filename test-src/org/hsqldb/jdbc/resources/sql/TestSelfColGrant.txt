@@ -1,4 +1,4 @@
--- $Id: TestSelfColGrant.txt 3459 2010-02-12 19:46:33Z fredt $
+-- $Id$
 -- Tests column-specific grants
 
 -- These two users are for sanity tests

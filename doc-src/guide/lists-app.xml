@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: openoffice-app.xml 847 2009-01-19 22:24:49Z unsaved $ -->
+<!-- $Id$ -->
 <!DOCTYPE book [
 <!ENTITY % dummy22 SYSTEM "../entities/global.ent">
 %dummy22;
