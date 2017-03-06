@@ -1,30 +1,27 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-
-*.bash			diff text ident
-*.c			diff text ident
-*.cfg			diff text ident
-*.cmd			diff text ident
-*.ent			diff text ident
-*.flex			diff text ident
-*.gradle		diff text ident
-*.groovy		diff text ident
-*.html			diff text ident
-*.init			diff text ident
-*.inter			diff text ident
-*.isql			diff text ident
-*.java			diff text ident
-*.nsql			diff text ident
-*.php			diff text ident
-*.pl			diff text ident
-*.plist			diff text ident
-*.properties		diff text ident
-*.py			diff text ident
-*.rc			diff text ident
-*.service		diff text ident
-*.sql			diff text ident
-*.txt			diff text ident
-*.xhtml			diff text ident
-*.xml			diff text ident
-*.xsl			diff text ident
-/build/gradle-gui	diff text ident
+*.bash			diff ident
+*.c			diff ident
+*.cfg			diff ident
+*.cmd			diff ident
+*.ent			diff ident
+*.flex			diff ident
+*.gradle		diff ident
+*.groovy		diff ident
+*.html			diff ident
+*.init			diff ident
+*.inter			diff ident
+*.isql			diff ident
+*.java			diff ident
+*.nsql			diff ident
+*.php			diff ident
+*.pl			diff ident
+*.plist			diff ident
+*.properties		diff ident
+*.py			diff ident
+*.rc			diff ident
+*.service		diff ident
+*.sql			diff ident
+*.txt			diff ident
+*.xhtml			diff ident
+*.xml			diff ident
+*.xsl			diff ident
+/build/gradle-gui	diff ident
