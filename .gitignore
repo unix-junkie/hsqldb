@@ -60,3 +60,11 @@
 # /testrun/sqltool/
 /testrun/sqltool/local*
 /testrun/sqltool/.gradle
+
+.idea/workspace.xml
+/test.*
+/*.csv
+/test3.*
+/testdb.*
+scripted-test.log
+/t*.txt
