@@ -41,6 +41,8 @@ import org.hsqldb.index.Index;
 import org.hsqldb.index.NodeAVL;
 import org.hsqldb.navigator.RowIterator;
 
+import static java.lang.Thread.currentThread;
+
 /*
  * Implementation of PersistentStore for information schema and temp tables.
  *
@@ -125,6 +127,8 @@ public class RowStoreAVLHybridExtended extends RowStoreAVLHybrid {
         if (indexList.length == 0 || accessorList[0] == null) {
             indexList    = keys;
             accessorList = new CachedObject[indexList.length];
+            final Thread currentThread = currentThread();
+            accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
 
             return;
         }
@@ -163,5 +167,7 @@ public class RowStoreAVLHybridExtended extends RowStoreAVLHybrid {
 
         indexList    = keys;
         accessorList = tempStore.accessorList;
+        final Thread currentThread = currentThread();
+        accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
     }
 }

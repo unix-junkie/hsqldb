@@ -31,6 +31,8 @@
 
 package org.hsqldb.persist;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -56,6 +58,9 @@ import org.hsqldb.rowio.RowInputInterface;
 import org.hsqldb.types.LobData;
 import org.hsqldb.types.Type;
 
+import static java.lang.Thread.currentThread;
+import static java.util.Collections.singletonMap;
+
 /*
  * Base implementation of PersistentStore for different table types.
  *
@@ -69,6 +74,7 @@ public abstract class RowStoreAVL implements PersistentStore {
     TableSpaceManager tableSpace;
     Index[]           indexList    = Index.emptyArray;
     CachedObject[]    accessorList = CachedObject.emptyArray;
+    final ConcurrentMap<Long, Thread> accesssorListThreads = new ConcurrentHashMap<>(singletonMap(currentThread().getId(), currentThread()));
     TableBase         table;
     long              baseElementCount;
     AtomicLong        elementCount = new AtomicLong();
@@ -353,6 +359,8 @@ public abstract class RowStoreAVL implements PersistentStore {
         if (indexList.length == 0 || accessorList[0] == null) {
             indexList    = keys;
             accessorList = new CachedObject[indexList.length];
+            final Thread currentThread = currentThread();
+            accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
 
             return;
         }
@@ -402,6 +410,8 @@ public abstract class RowStoreAVL implements PersistentStore {
 
         accessorList = (CachedObject[]) ArrayUtil.toAdjustedArray(accessorList,
                 null, position, diff);
+        final Thread currentThread = currentThread();
+        accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
         indexList = keys;
 
         try {
@@ -412,6 +422,7 @@ public abstract class RowStoreAVL implements PersistentStore {
             }
         } catch (HsqlException e) {
             accessorList = oldAccessors;
+            accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
             indexList    = oldIndexList;
 
             throw e;

@@ -54,6 +54,8 @@ import org.hsqldb.navigator.RowIterator;
 import org.hsqldb.rowio.RowInputInterface;
 import org.hsqldb.rowio.RowOutputInterface;
 
+import static java.lang.Thread.currentThread;
+
 /*
  * Implementation of PersistentStore for CACHED tables.
  *
@@ -89,6 +91,8 @@ public class RowStoreAVLDisk extends RowStoreAVL implements PersistentStore {
         this.table        = table;
         this.indexList    = table.getIndexList();
         this.accessorList = new CachedObject[indexList.length];
+        final Thread currentThread = currentThread();
+        accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
         largeData         = database.logger.getDataFileFactor() > 1;
     }
 
@@ -369,6 +373,8 @@ public class RowStoreAVLDisk extends RowStoreAVL implements PersistentStore {
         if (indexList.length == 0 || accessorList[0] == null) {
             indexList    = keys;
             accessorList = new CachedObject[indexList.length];
+            final Thread currentThread = currentThread();
+            accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
 
             return;
         }
@@ -422,6 +428,8 @@ public class RowStoreAVLDisk extends RowStoreAVL implements PersistentStore {
             }
 
             accessorList = newAccessorList;
+            final Thread currentThread = currentThread();
+            accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
         } finally {
             writeUnlock();
         }

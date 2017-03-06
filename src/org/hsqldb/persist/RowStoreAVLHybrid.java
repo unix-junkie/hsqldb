@@ -50,6 +50,10 @@ import org.hsqldb.lib.ArrayUtil;
 import org.hsqldb.navigator.RowIterator;
 import org.hsqldb.rowio.RowInputInterface;
 
+import static java.lang.String.format;
+import static java.lang.Thread.currentThread;
+import static java.util.stream.Collectors.toList;
+
 /*
  * Implementation of PersistentStore for result sets.
  *
@@ -324,7 +328,25 @@ public class RowStoreAVLHybrid extends RowStoreAVL implements PersistentStore {
 
     public CachedObject getAccessor(Index key) {
 
-        NodeAVL node = (NodeAVL) accessorList[key.getPosition()];
+        final CachedObject accessorListSnapshot[] = accessorList;
+        final int keyPositionSnapshot = key.getPosition(); // XXX: key#position itself is mutable
+        NodeAVL node;
+        try {
+            node = (NodeAVL) accessorListSnapshot[keyPositionSnapshot];
+            final Thread currentThread = currentThread();
+            accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
+        } catch (final ArrayIndexOutOfBoundsException aioobe) {
+            final Thread currentThread = currentThread();
+            final ArrayIndexOutOfBoundsException aioobe2 = new ArrayIndexOutOfBoundsException(format("Requested index: %d; length: %d; thread id: 0x%08x; thread name: \"%s\"; thread names: %s; original message: \"%s\"",
+                            keyPositionSnapshot,
+                            accessorListSnapshot.length,
+                            currentThread.getId(),
+                            currentThread.getName(),
+                            accesssorListThreads.values().stream().map(Thread::getName).collect(toList()),
+                            aioobe.getMessage()));
+            aioobe2.initCause(aioobe);
+            throw aioobe2;
+        }
 
         if (node == null) {
             return null;
@@ -332,8 +354,8 @@ public class RowStoreAVLHybrid extends RowStoreAVL implements PersistentStore {
 
         RowAVL row = (RowAVL) get(node.getRow(this), false);
 
-        node                            = row.getNode(key.getPosition());
-        accessorList[key.getPosition()] = node;
+        node                            = row.getNode(keyPositionSnapshot);
+        accessorListSnapshot[keyPositionSnapshot] = node;
 
         return node;
     }
@@ -343,6 +365,8 @@ public class RowStoreAVLHybrid extends RowStoreAVL implements PersistentStore {
         if (indexList.length == 0 || accessorList[0] == null) {
             indexList    = keys;
             accessorList = new CachedObject[indexList.length];
+            final Thread currentThread = currentThread();
+            accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
 
             return;
         }

@@ -49,6 +49,8 @@ import org.hsqldb.lib.ArrayUtil;
 import org.hsqldb.rowio.RowInputInterface;
 import org.hsqldb.rowio.RowOutputInterface;
 
+import static java.lang.Thread.currentThread;
+
 /*
  * Implementation of PersistentStore for TEXT tables.
  *
@@ -67,6 +69,8 @@ public class RowStoreAVLDiskData extends RowStoreAVL {
         this.table        = table;
         this.indexList    = table.getIndexList();
         this.accessorList = new CachedObject[indexList.length];
+        final Thread currentThread = currentThread();
+        accesssorListThreads.putIfAbsent(currentThread.getId(), currentThread);
         lock              = new ReentrantReadWriteLock();
         readLock          = lock.readLock();
         writeLock         = lock.writeLock();
