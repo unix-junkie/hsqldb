@@ -68,3 +68,4 @@
 /testdb.*
 scripted-test.log
 /t*.txt
+.idea/kotlinc.xml
